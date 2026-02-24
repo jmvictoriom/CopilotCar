@@ -1,0 +1,711 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A0D984D62F4E5FCE00D41E77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0D984D52F4E5FCE00D41E77 /* Assets.xcassets */; };
+		A10001 /* DriveMateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001 /* DriveMateApp.swift */; };
+		A10002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002 /* ContentView.swift */; };
+		A10003 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* Message.swift */; };
+		A10004 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004 /* AppSettings.swift */; };
+		A10005 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005 /* GeminiService.swift */; };
+		A10006 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006 /* SpeechRecognizer.swift */; };
+		A10007 /* SpeechSynthesizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* SpeechSynthesizer.swift */; };
+		A10008 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* ConversationViewModel.swift */; };
+		A10009 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* SettingsView.swift */; };
+		A10010 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* MessageBubble.swift */; };
+		A10011 /* PulsingMicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* PulsingMicButton.swift */; };
+		A10012 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* WaveformView.swift */; };
+		A10013 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* CarPlaySceneDelegate.swift */; };
+		A20001 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20001 /* MockURLProtocol.swift */; };
+		A20002 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20002 /* TestHelpers.swift */; };
+		A20003 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20003 /* MessageTests.swift */; };
+		A20004 /* AppLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20004 /* AppLanguageTests.swift */; };
+		A20005 /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20005 /* AppSettingsTests.swift */; };
+		A20006 /* GeminiServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20006 /* GeminiServiceTests.swift */; };
+		A20007 /* SpeechSynthesizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20007 /* SpeechSynthesizerTests.swift */; };
+		A20008 /* ConversationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20008 /* ConversationViewModelTests.swift */; };
+		A20009 /* ConversationStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20009 /* ConversationStateTests.swift */; };
+		A20010 /* ConversationFlowIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20010 /* ConversationFlowIntegrationTests.swift */; };
+		A30001 /* DriveMateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30001 /* DriveMateUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CIP001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PR0001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T10001;
+			remoteInfo = DriveMate;
+		};
+		CIP002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PR0001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T10001;
+			remoteInfo = DriveMate;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A0D984D52F4E5FCE00D41E77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B10001 /* DriveMateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveMateApp.swift; sourceTree = "<group>"; };
+		B10002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B10003 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B10004 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B10005 /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
+		B10006 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		B10007 /* SpeechSynthesizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSynthesizer.swift; sourceTree = "<group>"; };
+		B10008 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
+		B10009 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B10010 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
+		B10011 /* PulsingMicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingMicButton.swift; sourceTree = "<group>"; };
+		B10012 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		B10013 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
+		B10014 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B20001 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		B20002 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		B20003 /* MessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
+		B20004 /* AppLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguageTests.swift; sourceTree = "<group>"; };
+		B20005 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
+		B20006 /* GeminiServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiServiceTests.swift; sourceTree = "<group>"; };
+		B20007 /* SpeechSynthesizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSynthesizerTests.swift; sourceTree = "<group>"; };
+		B20008 /* ConversationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModelTests.swift; sourceTree = "<group>"; };
+		B20009 /* ConversationStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationStateTests.swift; sourceTree = "<group>"; };
+		B20010 /* ConversationFlowIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationFlowIntegrationTests.swift; sourceTree = "<group>"; };
+		B30001 /* DriveMateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveMateUITests.swift; sourceTree = "<group>"; };
+		P10001 /* DriveMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		P20001 /* DriveMateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DriveMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		P30001 /* DriveMateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DriveMateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F10001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F20001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F30001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G10001 = {
+			isa = PBXGroup;
+			children = (
+				G10002 /* DriveMate */,
+				G20001 /* DriveMateTests */,
+				G30001 /* DriveMateUITests */,
+				G10009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G10002 /* DriveMate */ = {
+			isa = PBXGroup;
+			children = (
+				A0D984D52F4E5FCE00D41E77 /* Assets.xcassets */,
+				B10001 /* DriveMateApp.swift */,
+				B10014 /* Info.plist */,
+				G10003 /* Models */,
+				G10004 /* Services */,
+				G10005 /* ViewModels */,
+				G10006 /* Views */,
+				G10008 /* CarPlay */,
+			);
+			path = DriveMate;
+			sourceTree = "<group>";
+		};
+		G10003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10003 /* Message.swift */,
+				B10004 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G10004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10005 /* GeminiService.swift */,
+				B10006 /* SpeechRecognizer.swift */,
+				B10007 /* SpeechSynthesizer.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		G10005 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B10008 /* ConversationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		G10006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B10002 /* ContentView.swift */,
+				B10009 /* SettingsView.swift */,
+				G10007 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G10007 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B10010 /* MessageBubble.swift */,
+				B10011 /* PulsingMicButton.swift */,
+				B10012 /* WaveformView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		G10008 /* CarPlay */ = {
+			isa = PBXGroup;
+			children = (
+				B10013 /* CarPlaySceneDelegate.swift */,
+			);
+			path = CarPlay;
+			sourceTree = "<group>";
+		};
+		G10009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				P10001 /* DriveMate.app */,
+				P20001 /* DriveMateTests.xctest */,
+				P30001 /* DriveMateUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		G20001 /* DriveMateTests */ = {
+			isa = PBXGroup;
+			children = (
+				G20002 /* Helpers */,
+				B20003 /* MessageTests.swift */,
+				B20004 /* AppLanguageTests.swift */,
+				B20005 /* AppSettingsTests.swift */,
+				B20006 /* GeminiServiceTests.swift */,
+				B20007 /* SpeechSynthesizerTests.swift */,
+				B20008 /* ConversationViewModelTests.swift */,
+				B20009 /* ConversationStateTests.swift */,
+				B20010 /* ConversationFlowIntegrationTests.swift */,
+			);
+			path = DriveMateTests;
+			sourceTree = "<group>";
+		};
+		G20002 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B20001 /* MockURLProtocol.swift */,
+				B20002 /* TestHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		G30001 /* DriveMateUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B30001 /* DriveMateUITests.swift */,
+			);
+			path = DriveMateUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T10001 /* DriveMate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C10003 /* Build configuration list for PBXNativeTarget "DriveMate" */;
+			buildPhases = (
+				S10001 /* Sources */,
+				F10001 /* Frameworks */,
+				R10001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DriveMate;
+			productName = DriveMate;
+			productReference = P10001 /* DriveMate.app */;
+			productType = "com.apple.product-type.application";
+		};
+		T20001 /* DriveMateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C20001 /* Build configuration list for PBXNativeTarget "DriveMateTests" */;
+			buildPhases = (
+				S20001 /* Sources */,
+				F20001 /* Frameworks */,
+				R20001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD001 /* PBXTargetDependency */,
+			);
+			name = DriveMateTests;
+			productName = DriveMateTests;
+			productReference = P20001 /* DriveMateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		T30001 /* DriveMateUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C30001 /* Build configuration list for PBXNativeTarget "DriveMateUITests" */;
+			buildPhases = (
+				S30001 /* Sources */,
+				F30001 /* Frameworks */,
+				R30001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD002 /* PBXTargetDependency */,
+			);
+			name = DriveMateUITests;
+			productName = DriveMateUITests;
+			productReference = P30001 /* DriveMateUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		PR0001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					T10001 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					T20001 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = T10001;
+					};
+					T30001 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = T10001;
+					};
+				};
+			};
+			buildConfigurationList = C10001 /* Build configuration list for PBXProject "DriveMate" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = es;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				es,
+				en,
+				Base,
+			);
+			mainGroup = G10001;
+			productRefGroup = G10009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T10001 /* DriveMate */,
+				T20001 /* DriveMateTests */,
+				T30001 /* DriveMateUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		R10001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0D984D62F4E5FCE00D41E77 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		R20001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		R30001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		S10001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001 /* DriveMateApp.swift in Sources */,
+				A10002 /* ContentView.swift in Sources */,
+				A10003 /* Message.swift in Sources */,
+				A10004 /* AppSettings.swift in Sources */,
+				A10005 /* GeminiService.swift in Sources */,
+				A10006 /* SpeechRecognizer.swift in Sources */,
+				A10007 /* SpeechSynthesizer.swift in Sources */,
+				A10008 /* ConversationViewModel.swift in Sources */,
+				A10009 /* SettingsView.swift in Sources */,
+				A10010 /* MessageBubble.swift in Sources */,
+				A10011 /* PulsingMicButton.swift in Sources */,
+				A10012 /* WaveformView.swift in Sources */,
+				A10013 /* CarPlaySceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S20001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20001 /* MockURLProtocol.swift in Sources */,
+				A20002 /* TestHelpers.swift in Sources */,
+				A20003 /* MessageTests.swift in Sources */,
+				A20004 /* AppLanguageTests.swift in Sources */,
+				A20005 /* AppSettingsTests.swift in Sources */,
+				A20006 /* GeminiServiceTests.swift in Sources */,
+				A20007 /* SpeechSynthesizerTests.swift in Sources */,
+				A20008 /* ConversationViewModelTests.swift in Sources */,
+				A20009 /* ConversationStateTests.swift in Sources */,
+				A20010 /* ConversationFlowIntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		S30001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A30001 /* DriveMateUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		TD001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10001 /* DriveMate */;
+			targetProxy = CIP001 /* PBXContainerItemProxy */;
+		};
+		TD002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T10001 /* DriveMate */;
+			targetProxy = CIP002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6L5VDX4RR3;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BC0002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6L5VDX4RR3;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BC0003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DriveMate/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DriveMate;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DriveMate necesita acceso al micrófono para escuchar tus comandos de voz.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "DriveMate necesita acceso al reconocimiento de voz para transcribir lo que dices mientras conduces.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BC0004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DriveMate/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DriveMate;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DriveMate necesita acceso al micrófono para escuchar tus comandos de voz.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "DriveMate necesita acceso al reconocimiento de voz para transcribir lo que dices mientras conduces.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BC2001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DriveMate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DriveMate";
+			};
+			name = Debug;
+		};
+		BC2002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DriveMate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DriveMate";
+			};
+			name = Release;
+		};
+		BC3001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DriveMate;
+			};
+			name = Debug;
+		};
+		BC3002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesusvictorio.drivemate.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DriveMate;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C10001 /* Build configuration list for PBXProject "DriveMate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0001 /* Debug */,
+				BC0002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C10003 /* Build configuration list for PBXNativeTarget "DriveMate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC0003 /* Debug */,
+				BC0004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C20001 /* Build configuration list for PBXNativeTarget "DriveMateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC2001 /* Debug */,
+				BC2002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C30001 /* Build configuration list for PBXNativeTarget "DriveMateUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC3001 /* Debug */,
+				BC3002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = PR0001 /* Project object */;
+}

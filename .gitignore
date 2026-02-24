@@ -1,0 +1,38 @@
+# Xcode
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+DerivedData/
+build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Swift Package Manager
+.build/
+Packages/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+Carthage/Checkouts/
+
+# Android
+*.iml
+.gradle/
+local.properties
+.idea/
+*.apk
+*.aab
+*.ap_
+*.dex

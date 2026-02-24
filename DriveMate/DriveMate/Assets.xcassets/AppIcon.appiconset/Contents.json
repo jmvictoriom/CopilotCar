@@ -1,0 +1,20 @@
+{
+  "images" : [
+    {
+      "filename" : "Gemini_Generated_Image_9rnuhc9rnuhc9rnu.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    },
+    {
+      "filename" : "Gemini_Generated_Image_9rnuhc9rnuhc9rnu 1.png",
+      "idiom" : "universal",
+      "platform" : "watchos",
+      "size" : "1024x1024"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
