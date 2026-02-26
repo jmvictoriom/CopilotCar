@@ -12,7 +12,8 @@ Available for **iOS** (SwiftUI + CarPlay) and **Android** (Jetpack Compose + And
 - **Multi-language**: Spanish, English, French, German, Portuguese
 - **Hands-free mode**: Continuous listening — the app re-listens after each response
 - **Dark mode**: Forced dark theme for night driving
-- **CarPlay / Android Auto**: Ready for in-car integration
+- **CarPlay**: Voice control with list template and state-driven UI
+- **Android Auto**: Full Car App Library integration with PaneTemplate UI
 - **No external dependencies**: Built entirely with native platform APIs
 - **Offline-capable STT/TTS**: Speech recognition and synthesis work without internet (AI responses require connection)
 
@@ -25,15 +26,17 @@ CopilotCar/
 │   └── DriveMate/
 │       ├── Models/             # Message, AppSettings, GeminiModel
 │       ├── Services/           # GeminiService, SpeechRecognizer, SpeechSynthesizer
-│       ├── ViewModels/         # ConversationViewModel
+│       ├── ViewModels/         # ConversationViewModel (shared singleton)
 │       ├── Views/              # ContentView, SettingsView, Components/
-│       └── CarPlay/            # CarPlaySceneDelegate
+│       ├── CarPlay/            # CarPlaySceneDelegate (list + voice templates)
+│       └── DriveMate.entitlements  # CarPlay audio entitlement
 ├── DriveMateAndroid/           # Android app (Jetpack Compose, API 26+)
 │   └── app/src/main/
 │       └── java/com/drivemate/
 │           ├── model/          # Message, AppSettings, AppLanguage, GeminiModel
-│           ├── service/        # GeminiService, SpeechRecognizerService, SpeechSynthesizerService
-│           ├── viewmodel/      # ConversationViewModel
+│           ├── service/        # GeminiService, SpeechRecognizer, SpeechSynthesizer, ConversationManager
+│           ├── viewmodel/      # ConversationViewModel (delegates to ConversationManager)
+│           ├── auto/           # DriveMateCarAppService, CarSession, CarScreen
 │           └── ui/             # MainScreen, SettingsScreen, components/, theme/
 ├── README.md
 ├── CHANGELOG.md
@@ -76,7 +79,7 @@ The free tier includes **15 requests/minute** and **1,500 requests/day**.
 | Text-to-Speech | AVSpeechSynthesizer | Android TextToSpeech |
 | Networking | URLSession | HttpURLConnection |
 | Settings | UserDefaults | SharedPreferences |
-| Car Integration | CarPlay (CPTemplate) | Android Auto |
+| Car Integration | CarPlay (CPListTemplate + CPVoiceControl) | Android Auto (Car App Library 1.4) |
 | Min Version | iOS 17 | API 26 (Android 8.0) |
 
 ## Architecture

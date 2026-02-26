@@ -111,13 +111,38 @@ Activa el tema oscuro independientemente de la configuracion del sistema. Recome
 
 ### CarPlay (iOS)
 
-DriveMate incluye soporte para CarPlay con interfaz de voz simplificada.
+DriveMate incluye soporte completo para CarPlay con interfaz de voz.
 
-> **Nota**: CarPlay requiere un entitlement de Apple (`com.apple.developer.carplay-audio`) que debe solicitarse a Apple. El codigo esta preparado pero necesita aprobacion.
+**Como funciona:**
+
+1. Conecta tu iPhone al sistema CarPlay del vehiculo (cable o inalambrico)
+2. Abre DriveMate desde la pantalla de CarPlay
+3. Veras la opcion **"Toca para hablar"** con un icono de microfono
+4. Toca para iniciar la conversacion — la pantalla cambiara automaticamente:
+   - **Escuchando...** (icono de onda) — la app graba tu voz
+   - **Pensando...** (icono de cerebro) — la IA procesa tu pregunta
+   - **Hablando...** (icono de altavoz) — la IA responde en voz alta
+5. Al terminar, vuelve automaticamente a la pantalla principal
+
+> **Nota**: CarPlay requiere el entitlement `com.apple.developer.carplay-audio` de Apple. El archivo de entitlements ya esta incluido en el proyecto.
 
 ### Android Auto
 
-DriveMate incluye los metadatos necesarios para Android Auto. La integracion completa requiere publicacion en Google Play y cumplir las guias de Android Auto.
+DriveMate incluye integracion completa con Android Auto usando la Car App Library.
+
+**Como funciona:**
+
+1. Conecta tu telefono Android al sistema Android Auto del vehiculo
+2. Abre DriveMate desde la pantalla de Android Auto
+3. Veras el estado actual y el ultimo mensaje de la conversacion
+4. Toca **"Hablar"** para iniciar — el boton cambia a **"Detener"** mientras escucha o habla
+5. Mientras la IA procesa, veras un indicador de carga
+6. La respuesta aparece en pantalla y se lee en voz alta
+
+**Requisitos:**
+- Android 8.0 (API 26) o superior
+- Android Auto instalado en el telefono
+- Vehiculo compatible con Android Auto o la app Android Auto para pantalla del telefono
 
 ---
 

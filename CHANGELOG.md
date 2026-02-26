@@ -2,6 +2,40 @@
 
 All notable changes to DriveMate will be documented in this file.
 
+## [1.1.0] - 2026-02-26
+
+### Added
+
+#### iOS
+- CarPlay entitlements file (`com.apple.developer.carplay-audio`)
+- List template as CarPlay root with "Toca para hablar" action
+- Voice control template push/pop on conversation state changes
+- Real-time state observation in CarPlay (listening, processing, speaking)
+- System images for CarPlay voice control states (waveform, brain, speaker)
+- UIWindowSceneSessionRoleApplication scene configuration in Info.plist
+
+#### Android
+- Full Android Auto support via `androidx.car.app` library (v1.4.0)
+- `DriveMateCarAppService` — Car App Service entry point
+- `DriveMateCarSession` — session management for Android Auto
+- `DriveMateCarScreen` — PaneTemplate UI with mic action and state display
+- `ConversationManager` — shared service extracted from ViewModel for cross-component access
+- Microphone vector drawable (`ic_mic.xml`) for car UI
+- Car app service declaration in AndroidManifest.xml
+
+### Changed
+
+#### iOS
+- `ConversationViewModel` is now a shared singleton via `DriveMateApp.sharedViewModel`
+- `ContentView` receives ViewModel as parameter instead of creating its own
+- `CarPlaySceneDelegate` uses shared ViewModel instead of a separate instance
+
+#### Android
+- `ConversationViewModel` now delegates to `ConversationManager` (thin wrapper)
+- `DriveMateApp` initializes shared `ConversationManager` in `onCreate()`
+- `ConversationState` enum moved from `viewmodel` to `service` package
+- `automotive_app_desc.xml` changed from `voice` to `template` type
+
 ## [1.0.0] - 2026-02-24
 
 ### Added
