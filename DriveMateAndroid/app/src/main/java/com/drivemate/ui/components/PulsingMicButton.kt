@@ -33,7 +33,7 @@ import com.drivemate.ui.theme.Blue800
 import com.drivemate.ui.theme.Green500
 import com.drivemate.ui.theme.Orange500
 import com.drivemate.ui.theme.Red500
-import com.drivemate.viewmodel.ConversationState
+import com.drivemate.service.ConversationState
 
 @Composable
 fun PulsingMicButton(

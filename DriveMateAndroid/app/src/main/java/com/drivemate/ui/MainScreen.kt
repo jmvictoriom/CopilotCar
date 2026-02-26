@@ -50,7 +50,7 @@ import com.drivemate.ui.components.PulsingMicButton
 import com.drivemate.ui.components.WaveformView
 import com.drivemate.ui.theme.Green500
 import com.drivemate.ui.theme.Red500
-import com.drivemate.viewmodel.ConversationState
+import com.drivemate.service.ConversationState
 import com.drivemate.viewmodel.ConversationViewModel
 
 @Composable

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = ConversationViewModel()
+    var viewModel: ConversationViewModel
     @State private var showSettings = false
 
     var body: some View {
@@ -172,5 +172,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(viewModel: ConversationViewModel())
 }
