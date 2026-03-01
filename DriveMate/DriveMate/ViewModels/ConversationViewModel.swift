@@ -101,9 +101,28 @@ final class ConversationViewModel {
             let assistantMessage = Message(role: .assistant, content: response)
             messages.append(assistantMessage)
             speakResponse(response)
+
+            // Extract driver profile every 10 messages
+            if messages.count % 10 == 0 {
+                Task.detached { [weak self] in
+                    await self?.updateDriverProfile()
+                }
+            }
         } catch {
             state = .idle
             errorMessage = error.localizedDescription
+        }
+    }
+
+    private func updateDriverProfile() async {
+        do {
+            let profile = try await geminiService.extractDriverProfile(
+                currentProfile: settings.driverProfile,
+                settings: settings
+            )
+            settings.driverProfile = profile
+        } catch {
+            // Profile extraction is best-effort, don't show errors
         }
     }
 
@@ -126,10 +145,18 @@ final class ConversationViewModel {
     }
 
     func clearConversation() {
-        messages.removeAll()
-        Task {
-            await geminiService.clearHistory()
+        // Extract profile before clearing if there's enough conversation
+        if messages.count >= 4 {
+            Task {
+                await updateDriverProfile()
+                await geminiService.clearHistory()
+            }
+        } else {
+            Task {
+                await geminiService.clearHistory()
+            }
         }
+        messages.removeAll()
     }
 
     var stateLabel: String {

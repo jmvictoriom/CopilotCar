@@ -39,6 +39,50 @@ actor GeminiService {
         conversationHistory.count
     }
 
+    private func buildSystemPrompt(settings: AppSettings) -> String {
+        let lang = settings.language.systemPromptLanguage
+        let profile = settings.driverProfile
+
+        var prompt = """
+            Eres DriveMate, un copiloto de voz inteligente para conductores. \
+            Responde siempre en \(lang).
+
+            PERSONALIDAD Y HUMOR:
+            - Eres como un amigo ingenioso que va de copiloto. Cercano, divertido y con chispa.
+            - Usa humor natural: chistes cortos, juegos de palabras, datos curiosos graciosos.
+            - Adapta tu estilo de humor según lo que le guste al conductor.
+            - Puedes lanzar trivias o curiosidades para amenizar el viaje.
+            - Si el conductor está de buen humor, sé más bromista. Si está serio, sé más directo.
+
+            REGLAS DE RESPUESTA:
+            - Máximo 2-3 frases. Tus respuestas se leen en voz alta mientras conduce.
+            - Sé directo, claro y natural. Nada de listas largas ni formato markdown.
+            - Recuerda detalles de la conversación actual y úsalos para personalizar.
+
+            SEGURIDAD VIAL (PRIORIDAD MÁXIMA):
+            - Nunca sugieras que el conductor mire la pantalla, escriba o haga algo que distraiga.
+            - Si detectas una emergencia, recomienda detenerse en un lugar seguro o llamar al 112/911.
+            - No des indicaciones de navegación paso a paso (para eso está el GPS).
+
+            CAPACIDADES:
+            - Conversación general, curiosidades, noticias, cultura.
+            - Orientación sobre rutas y destinos (sin reemplazar al GPS).
+            - Entretenimiento: chistes, juegos de palabras, trivias para amenizar el viaje.
+            - Información práctica: clima, gasolineras, restaurantes, horarios.
+            - Ayuda con cálculos rápidos, traducciones y definiciones.
+
+            Si no sabes algo, dilo honestamente. Nunca inventes datos críticos.
+            """
+
+        if !profile.isEmpty {
+            prompt += "\n\nPERFIL DEL CONDUCTOR (lo que sabes de viajes anteriores):\n\(profile)"
+        } else {
+            prompt += "\n\nConductor nuevo. Adapta tu estilo según la conversación y aprende sus preferencias."
+        }
+
+        return prompt
+    }
+
     func sendMessage(_ text: String, settings: AppSettings) async throws -> String {
         let apiKey = settings.geminiAPIKey
         guard !apiKey.isEmpty else { throw GeminiError.noAPIKey }
@@ -53,12 +97,10 @@ actor GeminiService {
             "parts": [["text": text]]
         ])
 
-        let systemPrompt = "Eres un copiloto de voz para conductores llamado DriveMate. Responde de forma concisa, clara y útil en \(settings.language.systemPromptLanguage). Mantén las respuestas cortas (1-3 frases) porque serán leídas en voz alta mientras el usuario conduce. Puedes ayudar con navegación, información general, entretenimiento, y cualquier consulta. Sé amigable y natural."
-
         let body: [String: Any] = [
             "contents": conversationHistory,
             "systemInstruction": [
-                "parts": [["text": systemPrompt]]
+                "parts": [["text": buildSystemPrompt(settings: settings)]]
             ],
             "generationConfig": [
                 "maxOutputTokens": 256,
@@ -66,6 +108,61 @@ actor GeminiService {
             ]
         ]
 
+        let responseText = try await makeRequest(url: url, body: body)
+
+        conversationHistory.append([
+            "role": "model",
+            "parts": [["text": responseText]]
+        ])
+
+        // Keep history manageable (last 40 messages for better context)
+        if conversationHistory.count > 40 {
+            conversationHistory = Array(conversationHistory.suffix(40))
+        }
+
+        return responseText
+    }
+
+    func extractDriverProfile(currentProfile: String, settings: AppSettings) async throws -> String {
+        let apiKey = settings.geminiAPIKey
+        guard !apiKey.isEmpty else { throw GeminiError.noAPIKey }
+
+        let endpoint = "\(baseURL)\(settings.geminiModel.apiPath)?key=\(apiKey)"
+        guard let url = URL(string: endpoint) else { throw GeminiError.invalidURL }
+
+        let extractionPrompt = """
+            Analiza nuestra conversación y actualiza el perfil del conductor. \
+            Incluye solo información confirmada:
+            - Nombre o apodo (si lo mencionó)
+            - Intereses y temas favoritos
+            - Estilo de humor preferido (qué tipo de chistes le gustan)
+            - Destinos o rutas frecuentes
+            - Cualquier dato personal relevante
+
+            Perfil actual: \(currentProfile.isEmpty ? "Nuevo conductor, sin perfil aún." : currentProfile)
+
+            Responde SOLO con el perfil actualizado en texto breve (máximo 150 palabras). \
+            No incluyas explicaciones ni saludos.
+            """
+
+        var tempHistory = conversationHistory
+        tempHistory.append([
+            "role": "user",
+            "parts": [["text": extractionPrompt]]
+        ])
+
+        let body: [String: Any] = [
+            "contents": tempHistory,
+            "generationConfig": [
+                "maxOutputTokens": 300,
+                "temperature": 0.3
+            ]
+        ]
+
+        return try await makeRequest(url: url, body: body)
+    }
+
+    private func makeRequest(url: URL, body: [String: Any]) async throws -> String {
         let jsonData = try JSONSerialization.data(withJSONObject: body)
 
         var request = URLRequest(url: url)
@@ -108,18 +205,6 @@ actor GeminiService {
             throw GeminiError.decodingError
         }
 
-        let responseText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        conversationHistory.append([
-            "role": "model",
-            "parts": [["text": responseText]]
-        ])
-
-        // Keep history manageable (last 20 messages)
-        if conversationHistory.count > 20 {
-            conversationHistory = Array(conversationHistory.suffix(20))
-        }
-
-        return responseText
+        return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

@@ -107,14 +107,33 @@ class ConversationManager(
                 text = text,
                 apiKey = settings.geminiAPIKey.value,
                 model = settings.geminiModel.value,
-                language = settings.language.value
+                language = settings.language.value,
+                driverProfile = settings.driverProfile.value
             )
             val assistantMessage = Message(role = MessageRole.ASSISTANT, content = response)
             _messages.value = _messages.value + assistantMessage
             speakResponse(response)
+
+            // Extract driver profile every 10 messages
+            if (_messages.value.size % 10 == 0) {
+                scope.launch { updateDriverProfile() }
+            }
         } catch (e: Exception) {
             _state.value = ConversationState.IDLE
             _errorMessage.value = e.message ?: "Error desconocido"
+        }
+    }
+
+    private suspend fun updateDriverProfile() {
+        try {
+            val profile = geminiService.extractDriverProfile(
+                currentProfile = settings.driverProfile.value,
+                apiKey = settings.geminiAPIKey.value,
+                model = settings.geminiModel.value
+            )
+            settings.setDriverProfile(profile)
+        } catch (_: Exception) {
+            // Profile extraction is best-effort, don't show errors
         }
     }
 
@@ -135,8 +154,16 @@ class ConversationManager(
     }
 
     fun clearConversation() {
+        // Extract profile before clearing if there's enough conversation
+        if (_messages.value.size >= 4) {
+            scope.launch {
+                updateDriverProfile()
+                geminiService.clearHistory()
+            }
+        } else {
+            geminiService.clearHistory()
+        }
         _messages.value = emptyList()
-        geminiService.clearHistory()
     }
 
     fun dismissError() {

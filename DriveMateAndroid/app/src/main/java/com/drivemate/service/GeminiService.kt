@@ -31,33 +31,64 @@ class GeminiService {
 
     fun historyCount(): Int = conversationHistory.size
 
+    private fun buildSystemPrompt(language: AppLanguage, driverProfile: String): String {
+        val lang = language.systemPromptLanguage
+
+        var prompt = "Eres DriveMate, un copiloto de voz inteligente para conductores. " +
+                "Responde siempre en $lang.\n\n" +
+                "PERSONALIDAD Y HUMOR:\n" +
+                "- Eres como un amigo ingenioso que va de copiloto. Cercano, divertido y con chispa.\n" +
+                "- Usa humor natural: chistes cortos, juegos de palabras, datos curiosos graciosos.\n" +
+                "- Adapta tu estilo de humor según lo que le guste al conductor.\n" +
+                "- Puedes lanzar trivias o curiosidades para amenizar el viaje.\n" +
+                "- Si el conductor está de buen humor, sé más bromista. Si está serio, sé más directo.\n\n" +
+                "REGLAS DE RESPUESTA:\n" +
+                "- Máximo 2-3 frases. Tus respuestas se leen en voz alta mientras conduce.\n" +
+                "- Sé directo, claro y natural. Nada de listas largas ni formato markdown.\n" +
+                "- Recuerda detalles de la conversación actual y úsalos para personalizar.\n\n" +
+                "SEGURIDAD VIAL (PRIORIDAD MÁXIMA):\n" +
+                "- Nunca sugieras que el conductor mire la pantalla, escriba o haga algo que distraiga.\n" +
+                "- Si detectas una emergencia, recomienda detenerse en un lugar seguro o llamar al 112/911.\n" +
+                "- No des indicaciones de navegación paso a paso (para eso está el GPS).\n\n" +
+                "CAPACIDADES:\n" +
+                "- Conversación general, curiosidades, noticias, cultura.\n" +
+                "- Orientación sobre rutas y destinos (sin reemplazar al GPS).\n" +
+                "- Entretenimiento: chistes, juegos de palabras, trivias para amenizar el viaje.\n" +
+                "- Información práctica: clima, gasolineras, restaurantes, horarios.\n" +
+                "- Ayuda con cálculos rápidos, traducciones y definiciones.\n\n" +
+                "Si no sabes algo, dilo honestamente. Nunca inventes datos críticos."
+
+        prompt += if (driverProfile.isNotEmpty()) {
+            "\n\nPERFIL DEL CONDUCTOR (lo que sabes de viajes anteriores):\n$driverProfile"
+        } else {
+            "\n\nConductor nuevo. Adapta tu estilo según la conversación y aprende sus preferencias."
+        }
+
+        return prompt
+    }
+
     suspend fun sendMessage(
         text: String,
         apiKey: String,
         model: GeminiModel,
-        language: AppLanguage
+        language: AppLanguage,
+        driverProfile: String = ""
     ): String = withContext(Dispatchers.IO) {
         if (apiKey.isEmpty()) throw GeminiError.NoAPIKey()
 
         val endpoint = "$baseURL${model.apiPath}?key=$apiKey"
 
-        // Add user message to history
         val userMsg = JSONObject().apply {
             put("role", "user")
             put("parts", JSONArray().put(JSONObject().put("text", text)))
         }
         conversationHistory.add(userMsg)
 
-        val systemPrompt = "Eres un copiloto de voz para conductores llamado DriveMate. " +
-                "Responde de forma concisa, clara y útil en ${language.systemPromptLanguage}. " +
-                "Mantén las respuestas cortas (1-3 frases) porque serán leídas en voz alta " +
-                "mientras el usuario conduce. Puedes ayudar con navegación, información general, " +
-                "entretenimiento, y cualquier consulta. Sé amigable y natural."
-
         val body = JSONObject().apply {
             put("contents", JSONArray(conversationHistory.map { it.toString() }.map { JSONObject(it) }))
             put("systemInstruction", JSONObject().apply {
-                put("parts", JSONArray().put(JSONObject().put("text", systemPrompt)))
+                put("parts", JSONArray().put(JSONObject().put("text",
+                    buildSystemPrompt(language, driverProfile))))
             })
             put("generationConfig", JSONObject().apply {
                 put("maxOutputTokens", 256)
@@ -65,6 +96,62 @@ class GeminiService {
             })
         }
 
+        val trimmedResponse = makeRequest(endpoint, body)
+
+        val modelMsg = JSONObject().apply {
+            put("role", "model")
+            put("parts", JSONArray().put(JSONObject().put("text", trimmedResponse)))
+        }
+        conversationHistory.add(modelMsg)
+
+        // Keep history manageable (last 40 messages for better context)
+        if (conversationHistory.size > 40) {
+            val keep = conversationHistory.takeLast(40)
+            conversationHistory.clear()
+            conversationHistory.addAll(keep)
+        }
+
+        trimmedResponse
+    }
+
+    suspend fun extractDriverProfile(
+        currentProfile: String,
+        apiKey: String,
+        model: GeminiModel
+    ): String = withContext(Dispatchers.IO) {
+        if (apiKey.isEmpty()) throw GeminiError.NoAPIKey()
+
+        val endpoint = "$baseURL${model.apiPath}?key=$apiKey"
+
+        val extractionPrompt = "Analiza nuestra conversación y actualiza el perfil del conductor. " +
+                "Incluye solo información confirmada:\n" +
+                "- Nombre o apodo (si lo mencionó)\n" +
+                "- Intereses y temas favoritos\n" +
+                "- Estilo de humor preferido (qué tipo de chistes le gustan)\n" +
+                "- Destinos o rutas frecuentes\n" +
+                "- Cualquier dato personal relevante\n\n" +
+                "Perfil actual: ${if (currentProfile.isEmpty()) "Nuevo conductor, sin perfil aún." else currentProfile}\n\n" +
+                "Responde SOLO con el perfil actualizado en texto breve (máximo 150 palabras). " +
+                "No incluyas explicaciones ni saludos."
+
+        val tempHistory = conversationHistory.map { JSONObject(it.toString()) }.toMutableList()
+        tempHistory.add(JSONObject().apply {
+            put("role", "user")
+            put("parts", JSONArray().put(JSONObject().put("text", extractionPrompt)))
+        })
+
+        val body = JSONObject().apply {
+            put("contents", JSONArray(tempHistory.map { it.toString() }.map { JSONObject(it) }))
+            put("generationConfig", JSONObject().apply {
+                put("maxOutputTokens", 300)
+                put("temperature", 0.3)
+            })
+        }
+
+        makeRequest(endpoint, body)
+    }
+
+    private fun makeRequest(endpoint: String, body: JSONObject): String {
         try {
             val url = URL(endpoint)
             val connection = (url.openConnection() as HttpURLConnection).apply {
@@ -83,12 +170,10 @@ class GeminiService {
             val statusCode = connection.responseCode
 
             if (statusCode == 429) {
-                conversationHistory.removeLast()
                 throw GeminiError.RateLimited()
             }
 
             if (statusCode !in 200..299) {
-                conversationHistory.removeLast()
                 throw GeminiError.HttpError(statusCode)
             }
 
@@ -103,31 +188,13 @@ class GeminiService {
             val responseText = parts?.optJSONObject(0)?.optString("text")
 
             if (responseText.isNullOrBlank()) {
-                conversationHistory.removeLast()
                 throw GeminiError.DecodingError()
             }
 
-            val trimmedResponse = responseText.trim()
-
-            // Add model response to history
-            val modelMsg = JSONObject().apply {
-                put("role", "model")
-                put("parts", JSONArray().put(JSONObject().put("text", trimmedResponse)))
-            }
-            conversationHistory.add(modelMsg)
-
-            // Keep history manageable (last 20 messages)
-            if (conversationHistory.size > 20) {
-                val keep = conversationHistory.takeLast(20)
-                conversationHistory.clear()
-                conversationHistory.addAll(keep)
-            }
-
-            trimmedResponse
+            return responseText.trim()
         } catch (e: GeminiError) {
             throw e
         } catch (e: Exception) {
-            conversationHistory.removeLast()
             throw GeminiError.NetworkError(e)
         }
     }

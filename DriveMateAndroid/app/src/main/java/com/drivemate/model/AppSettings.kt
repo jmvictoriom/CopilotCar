@@ -33,6 +33,9 @@ class AppSettings(context: Context) {
     private val _forceDarkMode = MutableStateFlow(prefs.getBoolean("forceDarkMode", true))
     val forceDarkMode: StateFlow<Boolean> = _forceDarkMode.asStateFlow()
 
+    private val _driverProfile = MutableStateFlow(prefs.getString("driverProfile", "") ?: "")
+    val driverProfile: StateFlow<String> = _driverProfile.asStateFlow()
+
     fun setLanguage(value: AppLanguage) {
         _language.value = value
         prefs.edit().putString("language", value.locale).apply()
@@ -61,5 +64,10 @@ class AppSettings(context: Context) {
     fun setForceDarkMode(value: Boolean) {
         _forceDarkMode.value = value
         prefs.edit().putBoolean("forceDarkMode", value).apply()
+    }
+
+    fun setDriverProfile(value: String) {
+        _driverProfile.value = value
+        prefs.edit().putString("driverProfile", value).apply()
     }
 }

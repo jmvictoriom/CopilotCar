@@ -109,6 +109,10 @@ final class AppSettings {
         didSet { defaults.set(forceDarkMode, forKey: "forceDarkMode") }
     }
 
+    var driverProfile: String {
+        didSet { defaults.set(driverProfile, forKey: "driverProfile") }
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         let langRaw = defaults.string(forKey: "language") ?? AppLanguage.spanish.rawValue
@@ -119,5 +123,6 @@ final class AppSettings {
         self.speechRate = defaults.object(forKey: "speechRate") as? Float ?? 0.5
         self.handsFreeMode = defaults.bool(forKey: "handsFreeMode")
         self.forceDarkMode = defaults.object(forKey: "forceDarkMode") as? Bool ?? true
+        self.driverProfile = defaults.string(forKey: "driverProfile") ?? ""
     }
 }
