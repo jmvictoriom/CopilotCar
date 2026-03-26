@@ -21,6 +21,8 @@
 		A10011 /* PulsingMicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* PulsingMicButton.swift */; };
 		A10012 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* WaveformView.swift */; };
 		A10013 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* CarPlaySceneDelegate.swift */; };
+		A10014 /* PlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015 /* PlacesService.swift */; };
+		A10015 /* ResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016 /* ResponseParser.swift */; };
 		A20001 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20001 /* MockURLProtocol.swift */; };
 		A20002 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20002 /* TestHelpers.swift */; };
 		A20003 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20003 /* MessageTests.swift */; };
@@ -67,7 +69,9 @@
 		B10012 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		B10013 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarPlaySceneDelegate.swift; sourceTree = "<group>"; };
 		B10014 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B10015 /* DriveMate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveMate.entitlements; sourceTree = "<group>"; };
+		B10015 /* PlacesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesService.swift; sourceTree = "<group>"; };
+		B10016 /* ResponseParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseParser.swift; sourceTree = "<group>"; };
+		B10017 /* DriveMate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriveMate.entitlements; sourceTree = "<group>"; };
 		B20001 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		B20002 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		B20003 /* MessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
@@ -125,7 +129,7 @@
 				A0D984D52F4E5FCE00D41E77 /* Assets.xcassets */,
 				B10001 /* DriveMateApp.swift */,
 				B10014 /* Info.plist */,
-				B10015 /* DriveMate.entitlements */,
+				B10017 /* DriveMate.entitlements */,
 				G10003 /* Models */,
 				G10004 /* Services */,
 				G10005 /* ViewModels */,
@@ -148,6 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				B10005 /* GeminiService.swift */,
+				B10015 /* PlacesService.swift */,
+				B10016 /* ResponseParser.swift */,
 				B10006 /* SpeechRecognizer.swift */,
 				B10007 /* SpeechSynthesizer.swift */,
 			);
@@ -376,6 +382,8 @@
 				A10011 /* PulsingMicButton.swift in Sources */,
 				A10012 /* WaveformView.swift in Sources */,
 				A10013 /* CarPlaySceneDelegate.swift in Sources */,
+				A10014 /* PlacesService.swift in Sources */,
+				A10015 /* ResponseParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

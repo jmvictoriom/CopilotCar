@@ -113,6 +113,10 @@ final class AppSettings {
         didSet { defaults.set(driverProfile, forKey: "driverProfile") }
     }
 
+    var placesAPIKey: String {
+        didSet { defaults.set(placesAPIKey, forKey: "placesAPIKey") }
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         let langRaw = defaults.string(forKey: "language") ?? AppLanguage.spanish.rawValue
@@ -124,5 +128,6 @@ final class AppSettings {
         self.handsFreeMode = defaults.bool(forKey: "handsFreeMode")
         self.forceDarkMode = defaults.object(forKey: "forceDarkMode") as? Bool ?? true
         self.driverProfile = defaults.string(forKey: "driverProfile") ?? ""
+        self.placesAPIKey = defaults.string(forKey: "placesAPIKey") ?? ""
     }
 }

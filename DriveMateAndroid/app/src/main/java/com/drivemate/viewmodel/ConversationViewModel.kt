@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.drivemate.DriveMateApp
 import com.drivemate.model.Message
+import com.drivemate.model.PlaceAction
 import com.drivemate.service.ConversationManager
 import com.drivemate.service.ConversationState
 import kotlinx.coroutines.flow.StateFlow
@@ -28,5 +29,6 @@ class ConversationViewModel(application: Application) : AndroidViewModel(applica
     fun toggleListening() = manager.toggleListening()
     fun startListening() = manager.startListening()
     fun clearConversation() = manager.clearConversation()
+    fun callPlace(action: PlaceAction) = manager.callPlace(action)
     fun dismissError() = manager.dismissError()
 }

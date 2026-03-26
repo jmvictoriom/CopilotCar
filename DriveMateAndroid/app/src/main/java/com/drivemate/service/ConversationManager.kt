@@ -1,8 +1,12 @@
 package com.drivemate.service
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.drivemate.model.AppSettings
 import com.drivemate.model.Message
 import com.drivemate.model.MessageRole
+import com.drivemate.model.PlaceAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,10 +20,12 @@ enum class ConversationState {
 }
 
 class ConversationManager(
+    private val context: Context,
     val settings: AppSettings,
     val speechRecognizer: SpeechRecognizerService,
     val geminiService: GeminiService,
-    val speechSynthesizer: SpeechSynthesizerService
+    val speechSynthesizer: SpeechSynthesizerService,
+    val placesService: PlacesService = PlacesService()
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -108,11 +114,22 @@ class ConversationManager(
                 apiKey = settings.geminiAPIKey.value,
                 model = settings.geminiModel.value,
                 language = settings.language.value,
-                driverProfile = settings.driverProfile.value
+                driverProfile = settings.driverProfile.value,
+                hasPlacesKey = settings.placesAPIKey.value.isNotEmpty()
             )
-            val assistantMessage = Message(role = MessageRole.ASSISTANT, content = response)
-            _messages.value = _messages.value + assistantMessage
-            speakResponse(response)
+            val parsed = ResponseParser.parse(response)
+
+            if (parsed.searchQuery != null && settings.placesAPIKey.value.isNotEmpty()) {
+                val searchingMessage = Message(role = MessageRole.ASSISTANT, content = parsed.cleanText)
+                _messages.value = _messages.value + searchingMessage
+                speakResponse(parsed.cleanText)
+
+                scope.launch { handlePlaceSearch(parsed.searchQuery) }
+            } else {
+                val assistantMessage = Message(role = MessageRole.ASSISTANT, content = parsed.cleanText)
+                _messages.value = _messages.value + assistantMessage
+                speakResponse(parsed.cleanText)
+            }
 
             // Extract driver profile every 10 messages
             if (_messages.value.size % 10 == 0) {
@@ -122,6 +139,72 @@ class ConversationManager(
             _state.value = ConversationState.IDLE
             _errorMessage.value = e.message ?: "Error desconocido"
         }
+    }
+
+    private suspend fun handlePlaceSearch(query: String) {
+        try {
+            val results = placesService.searchPlaces(query, settings.placesAPIKey.value)
+
+            val actions = results.map { place ->
+                PlaceAction(
+                    id = place.id,
+                    placeName = place.displayName,
+                    address = place.formattedAddress,
+                    rating = place.rating,
+                    placeId = place.id
+                )
+            }
+
+            val summary = results.mapIndexed { i, place ->
+                var line = "${i + 1}. ${place.displayName}"
+                if (place.rating != null) {
+                    line += ", ${"%.1f".format(place.rating)} estrellas"
+                }
+                line
+            }.joinToString(". ")
+
+            val resultsMessage = Message(
+                role = MessageRole.ASSISTANT,
+                content = "Encontré ${results.size} resultados:\n$summary",
+                actions = actions
+            )
+            _messages.value = _messages.value + resultsMessage
+
+            geminiService.injectMessage("model", "Resultados de búsqueda: $summary")
+
+            speakResponse("Encontré ${results.size} resultados. $summary. Puedes tocar llamar en cualquiera.")
+        } catch (e: Exception) {
+            val errorMsg = Message(
+                role = MessageRole.ASSISTANT,
+                content = "No pude encontrar resultados: ${e.message}"
+            )
+            _messages.value = _messages.value + errorMsg
+            speakResponse("No pude encontrar resultados.")
+        }
+    }
+
+    fun callPlace(action: PlaceAction) {
+        scope.launch {
+            try {
+                val phone = placesService.getPhoneNumber(action.placeId, settings.placesAPIKey.value)
+                val number = phone.internationalPhone ?: phone.nationalPhone
+                if (number == null) {
+                    _errorMessage.value = "${action.placeName} no tiene teléfono registrado."
+                    return@launch
+                }
+                openDialer(number)
+            } catch (e: Exception) {
+                _errorMessage.value = "No se pudo obtener el teléfono: ${e.message}"
+            }
+        }
+    }
+
+    private fun openDialer(number: String) {
+        val cleaned = number.replace(" ", "")
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$cleaned")).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(intent)
     }
 
     private suspend fun updateDriverProfile() {

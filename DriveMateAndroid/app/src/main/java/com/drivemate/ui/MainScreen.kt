@@ -142,7 +142,10 @@ fun MainScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(messages, key = { it.id }) { message ->
-                            MessageBubble(message = message)
+                            MessageBubble(
+                                message = message,
+                                onCallPlace = { action -> viewModel.callPlace(action) }
+                            )
                         }
                     }
                 }

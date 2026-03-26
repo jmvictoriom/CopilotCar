@@ -31,32 +31,49 @@ class GeminiService {
 
     fun historyCount(): Int = conversationHistory.size
 
-    private fun buildSystemPrompt(language: AppLanguage, driverProfile: String): String {
+    fun injectMessage(role: String, text: String) {
+        conversationHistory.add(JSONObject().apply {
+            put("role", role)
+            put("parts", JSONArray().put(JSONObject().put("text", text)))
+        })
+    }
+
+    private fun buildSystemPrompt(language: AppLanguage, driverProfile: String, hasPlacesKey: Boolean = false): String {
         val lang = language.systemPromptLanguage
 
-        var prompt = "Eres DriveMate, un copiloto de voz inteligente para conductores. " +
+        var prompt = "Eres DriveMate, un copiloto de voz para conductores. " +
                 "Responde siempre en $lang.\n\n" +
-                "PERSONALIDAD Y HUMOR:\n" +
-                "- Eres como un amigo ingenioso que va de copiloto. Cercano, divertido y con chispa.\n" +
-                "- Usa humor natural: chistes cortos, juegos de palabras, datos curiosos graciosos.\n" +
-                "- Adapta tu estilo de humor según lo que le guste al conductor.\n" +
-                "- Puedes lanzar trivias o curiosidades para amenizar el viaje.\n" +
-                "- Si el conductor está de buen humor, sé más bromista. Si está serio, sé más directo.\n\n" +
+                "PERSONALIDAD:\n" +
+                "- Cercano y natural, como un buen copiloto. Práctico ante todo.\n" +
+                "- Puedes usar humor puntual (un comentario gracioso, un dato curioso) " +
+                "pero sin forzarlo. La prioridad es ser útil.\n" +
+                "- Adapta el tono al conductor: si bromea, puedes seguirle; si va al grano, tú también.\n\n" +
                 "REGLAS DE RESPUESTA:\n" +
                 "- Máximo 2-3 frases. Tus respuestas se leen en voz alta mientras conduce.\n" +
-                "- Sé directo, claro y natural. Nada de listas largas ni formato markdown.\n" +
-                "- Recuerda detalles de la conversación actual y úsalos para personalizar.\n\n" +
+                "- Sé directo y claro. Nada de listas, formato markdown ni respuestas largas.\n" +
+                "- Recuerda detalles de la conversación y úsalos para personalizar.\n\n" +
                 "SEGURIDAD VIAL (PRIORIDAD MÁXIMA):\n" +
-                "- Nunca sugieras que el conductor mire la pantalla, escriba o haga algo que distraiga.\n" +
-                "- Si detectas una emergencia, recomienda detenerse en un lugar seguro o llamar al 112/911.\n" +
-                "- No des indicaciones de navegación paso a paso (para eso está el GPS).\n\n" +
+                "- Nunca sugieras mirar la pantalla, escribir o cualquier distracción.\n" +
+                "- Emergencias: recomienda detenerse en lugar seguro o llamar al 112/911.\n" +
+                "- No des navegación paso a paso (para eso está el GPS).\n\n" +
                 "CAPACIDADES:\n" +
-                "- Conversación general, curiosidades, noticias, cultura.\n" +
+                "- Conversación general, curiosidades, cultura.\n" +
                 "- Orientación sobre rutas y destinos (sin reemplazar al GPS).\n" +
-                "- Entretenimiento: chistes, juegos de palabras, trivias para amenizar el viaje.\n" +
-                "- Información práctica: clima, gasolineras, restaurantes, horarios.\n" +
-                "- Ayuda con cálculos rápidos, traducciones y definiciones.\n\n" +
-                "Si no sabes algo, dilo honestamente. Nunca inventes datos críticos."
+                "- Entretenimiento ligero: trivias, datos curiosos, chistes si los piden.\n" +
+                "- Info práctica: clima, gasolineras, restaurantes, horarios.\n" +
+                "- Cálculos rápidos, traducciones y definiciones.\n\n" +
+                "Si no sabes algo, dilo. Nunca inventes datos críticos como direcciones o teléfonos."
+
+        if (hasPlacesKey) {
+            prompt += "\n\nBÚSQUEDA DE LUGARES:\n" +
+                    "- Cuando el conductor pida buscar un lugar real (restaurante, gasolinera, hotel, etc.), " +
+                    "incluye el tag [BUSCAR:descripción del lugar] al final de tu respuesta.\n" +
+                    "- Ejemplo: el conductor dice \"busca restaurantes italianos cerca de Sol\". " +
+                    "Tú respondes: \"Voy a buscar eso por ti. [BUSCAR:restaurantes italianos cerca de Sol Madrid]\"\n" +
+                    "- Solo usa el tag cuando el conductor pida explícitamente buscar un lugar.\n" +
+                    "- La descripción debe ser clara e incluir la zona si el conductor la menciona.\n" +
+                    "- NO inventes resultados. El sistema buscará por ti y mostrará los resultados reales."
+        }
 
         prompt += if (driverProfile.isNotEmpty()) {
             "\n\nPERFIL DEL CONDUCTOR (lo que sabes de viajes anteriores):\n$driverProfile"
@@ -72,7 +89,8 @@ class GeminiService {
         apiKey: String,
         model: GeminiModel,
         language: AppLanguage,
-        driverProfile: String = ""
+        driverProfile: String = "",
+        hasPlacesKey: Boolean = false
     ): String = withContext(Dispatchers.IO) {
         if (apiKey.isEmpty()) throw GeminiError.NoAPIKey()
 
@@ -88,7 +106,7 @@ class GeminiService {
             put("contents", JSONArray(conversationHistory.map { it.toString() }.map { JSONObject(it) }))
             put("systemInstruction", JSONObject().apply {
                 put("parts", JSONArray().put(JSONObject().put("text",
-                    buildSystemPrompt(language, driverProfile))))
+                    buildSystemPrompt(language, driverProfile, hasPlacesKey))))
             })
             put("generationConfig", JSONObject().apply {
                 put("maxOutputTokens", 256)

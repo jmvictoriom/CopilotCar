@@ -36,6 +36,9 @@ class AppSettings(context: Context) {
     private val _driverProfile = MutableStateFlow(prefs.getString("driverProfile", "") ?: "")
     val driverProfile: StateFlow<String> = _driverProfile.asStateFlow()
 
+    private val _placesAPIKey = MutableStateFlow(prefs.getString("placesAPIKey", "") ?: "")
+    val placesAPIKey: StateFlow<String> = _placesAPIKey.asStateFlow()
+
     fun setLanguage(value: AppLanguage) {
         _language.value = value
         prefs.edit().putString("language", value.locale).apply()
@@ -69,5 +72,10 @@ class AppSettings(context: Context) {
     fun setDriverProfile(value: String) {
         _driverProfile.value = value
         prefs.edit().putString("driverProfile", value).apply()
+    }
+
+    fun setPlacesAPIKey(value: String) {
+        _placesAPIKey.value = value
+        prefs.edit().putString("placesAPIKey", value).apply()
     }
 }

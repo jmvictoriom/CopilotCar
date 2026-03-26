@@ -51,6 +51,7 @@ fun SettingsScreen(
 ) {
     val language by settings.language.collectAsState()
     val apiKey by settings.geminiAPIKey.collectAsState()
+    val placesApiKey by settings.placesAPIKey.collectAsState()
     val geminiModel by settings.geminiModel.collectAsState()
     val speechRate by settings.speechRate.collectAsState()
     val handsFreeMode by settings.handsFreeMode.collectAsState()
@@ -95,6 +96,23 @@ fun SettingsScreen(
                     .padding(horizontal = 16.dp)
             )
             SectionFooter("Obtén tu clave gratuita en aistudio.google.com/apikey. Gratis: 15 peticiones/minuto.")
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+            // Places API Key Section
+            SectionHeader("Google Places API (Opcional)")
+            OutlinedTextField(
+                value = placesApiKey,
+                onValueChange = { settings.setPlacesAPIKey(it) },
+                label = { Text("API Key") },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            SectionFooter("Permite buscar restaurantes, gasolineras y otros lugares reales. Obtén tu clave en console.cloud.google.com.")
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 

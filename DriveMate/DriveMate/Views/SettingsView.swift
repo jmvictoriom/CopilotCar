@@ -32,6 +32,18 @@ struct SettingsView: View {
                     Text("Obtén tu clave gratuita en aistudio.google.com/apikey. Gratis: 15 peticiones/minuto.")
                 }
 
+                // Places API Key
+                Section {
+                    SecureField("API Key", text: $settings.placesAPIKey)
+                        .textContentType(.password)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                } header: {
+                    Text("Google Places API (Opcional)")
+                } footer: {
+                    Text("Permite buscar restaurantes, gasolineras y otros lugares reales. Obtén tu clave en console.cloud.google.com.")
+                }
+
                 // Model
                 Section {
                     Picker("Modelo", selection: $settings.geminiModel) {

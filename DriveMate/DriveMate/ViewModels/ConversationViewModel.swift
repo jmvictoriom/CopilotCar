@@ -1,5 +1,8 @@
 import Foundation
 import Speech
+#if canImport(UIKit)
+import UIKit
+#endif
 
 enum ConversationState: Equatable {
     case idle
@@ -20,17 +23,20 @@ final class ConversationViewModel {
     let speechRecognizer: SpeechRecognizer
     let geminiService: GeminiService
     let speechSynthesizer: SpeechSynthesizer
+    let placesService: PlacesService
 
     init(
         settings: AppSettings = .shared,
         speechRecognizer: SpeechRecognizer = SpeechRecognizer(),
         geminiService: GeminiService = GeminiService(),
-        speechSynthesizer: SpeechSynthesizer = SpeechSynthesizer()
+        speechSynthesizer: SpeechSynthesizer = SpeechSynthesizer(),
+        placesService: PlacesService = PlacesService()
     ) {
         self.settings = settings
         self.speechRecognizer = speechRecognizer
         self.geminiService = geminiService
         self.speechSynthesizer = speechSynthesizer
+        self.placesService = placesService
     }
 
     func requestPermissions() {
@@ -98,9 +104,23 @@ final class ConversationViewModel {
     func sendToGemini(_ text: String) async {
         do {
             let response = try await geminiService.sendMessage(text, settings: settings)
-            let assistantMessage = Message(role: .assistant, content: response)
-            messages.append(assistantMessage)
-            speakResponse(response)
+            let parsed = ResponseParser.parse(response)
+
+            if let query = parsed.searchQuery, !settings.placesAPIKey.isEmpty {
+                // Show Gemini's message while we search
+                let searchingMessage = Message(role: .assistant, content: parsed.cleanText)
+                messages.append(searchingMessage)
+                speakResponse(parsed.cleanText)
+
+                // Search in background
+                Task {
+                    await handlePlaceSearch(query: query)
+                }
+            } else {
+                let assistantMessage = Message(role: .assistant, content: parsed.cleanText)
+                messages.append(assistantMessage)
+                speakResponse(parsed.cleanText)
+            }
 
             // Extract driver profile every 10 messages
             if messages.count % 10 == 0 {
@@ -112,6 +132,81 @@ final class ConversationViewModel {
             state = .idle
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func handlePlaceSearch(query: String) async {
+        do {
+            let results = try await placesService.searchPlaces(
+                query: query, apiKey: settings.placesAPIKey
+            )
+
+            let actions = results.map { place in
+                PlaceAction(
+                    id: place.id,
+                    placeName: place.displayName,
+                    address: place.formattedAddress,
+                    rating: place.rating,
+                    placeId: place.id,
+                    phoneNumber: nil
+                )
+            }
+
+            // Build summary for TTS
+            let summary = results.enumerated().map { (i, place) in
+                var line = "\(i + 1). \(place.displayName)"
+                if let rating = place.rating {
+                    line += ", \(String(format: "%.1f", rating)) estrellas"
+                }
+                return line
+            }.joined(separator: ". ")
+
+            let resultsMessage = Message(
+                role: .assistant,
+                content: "Encontré \(results.count) resultados:\n\(summary)",
+                actions: actions
+            )
+            messages.append(resultsMessage)
+
+            // Inject results into Gemini history
+            await geminiService.injectMessage(
+                role: "model",
+                text: "Resultados de búsqueda: \(summary)"
+            )
+
+            speakResponse("Encontré \(results.count) resultados. \(summary). Puedes tocar llamar en cualquiera.")
+        } catch {
+            let errorMsg = Message(
+                role: .assistant,
+                content: "No pude encontrar resultados: \(error.localizedDescription)"
+            )
+            messages.append(errorMsg)
+            speakResponse("No pude encontrar resultados.")
+        }
+    }
+
+    func callPlace(_ action: PlaceAction) {
+        Task {
+            do {
+                let phone = try await placesService.getPhoneNumber(
+                    placeId: action.placeId, apiKey: settings.placesAPIKey
+                )
+                guard let number = phone.internationalPhone ?? phone.nationalPhone else {
+                    errorMessage = "\(action.placeName) no tiene teléfono registrado."
+                    return
+                }
+                openDialer(number: number)
+            } catch {
+                errorMessage = "No se pudo obtener el teléfono: \(error.localizedDescription)"
+            }
+        }
+    }
+
+    private func openDialer(number: String) {
+        let cleaned = number.replacingOccurrences(of: " ", with: "")
+        guard let url = URL(string: "tel://\(cleaned)") else { return }
+        #if canImport(UIKit)
+        UIApplication.shared.open(url)
+        #endif
     }
 
     private func updateDriverProfile() async {

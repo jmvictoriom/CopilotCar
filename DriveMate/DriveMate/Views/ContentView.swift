@@ -97,8 +97,10 @@ struct ContentView: View {
                 } else {
                     LazyVStack(spacing: 12) {
                         ForEach(viewModel.messages) { message in
-                            MessageBubble(message: message)
-                                .id(message.id)
+                            MessageBubble(message: message) { action in
+                                viewModel.callPlace(action)
+                            }
+                            .id(message.id)
                         }
                     }
                     .padding()
